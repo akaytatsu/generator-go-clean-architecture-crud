@@ -1,3 +1,3 @@
 localtest:
 	npm link
-	yo generator-go-clean-architecture-crud
+	yo go-clean-architecture-crud

@@ -39,22 +39,22 @@ func (h *<%= entityUpCase %>Handler) Get<%= entityUpCase %>(c *gin.Context) {
 	c.JSON(http.StatusOK, <%= entityLowerCase %>)
 }
 
-// @Summary Get All <%= entityUpCase %>s
-// @Description Get All <%= entityUpCase %>s
+// @Summary Get All <%= entityUpCase %>
+// @Description Get All <%= entityUpCase %>
 // @Tags <%= entityUpCase %>
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} []entity.Entity<%= entityUpCase %> "success"
 // @Router /api/<%= entityLowerCase %> [get]
-func (h *<%= entityUpCase %>Handler) GetAll<%= entityUpCase %>s(c *gin.Context) {
-	<%= entityLowerCase %>s, err := h.Usecase<%= entityUpCase %>.GetAll<%= entityUpCase %>s()
+func (h *<%= entityUpCase %>Handler) GetAll<%= entityUpCase %>(c *gin.Context) {
+	<%= entityLowerCase %>, err := h.Usecase<%= entityUpCase %>.GetAll<%= entityUpCase %>()
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, <%= entityLowerCase %>s)
+	c.JSON(http.StatusOK, <%= entityLowerCase %>)
 }
 
 // @Summary Create <%= entityUpCase %>
@@ -130,7 +130,7 @@ func Mount<%= entityUpCase %>Handler(gin *gin.Engine, conn *gorm.DB, usecase use
 	group := gin.Group("/api/<%= entityLowerCase %>")
 
 	group.GET("/:id", handler.Get<%= entityUpCase %>)
-	group.GET("/", handler.GetAll<%= entityUpCase %>s)
+	group.GET("/", handler.GetAll<%= entityUpCase %>)
 
 	SetAdminMiddleware(conn, group)
 

@@ -20,12 +20,12 @@ func (r *Repository<%= entityUpCase %>) Get<%= entityUpCase %>ByID(id int) (<%= 
 	return <%= entityLowerCase %>, err
 }
 
-func (r *Repository<%= entityUpCase %>) GetAll<%= entityUpCase %>s() (<%= entityLowerCase %>s []entity.Entity<%= entityUpCase %>, err error) {
-	<%= entityLowerCase %>s = make([]entity.Entity<%= entityUpCase %>, 0)
+func (r *Repository<%= entityUpCase %>) GetAll<%= entityUpCase %>() (<%= entityLowerCase %> []entity.Entity<%= entityUpCase %>, err error) {
+	<%= entityLowerCase %> = make([]entity.Entity<%= entityUpCase %>, 0)
 
-	err = r.DB.Find(&<%= entityLowerCase %>s).Error
+	err = r.DB.Find(&<%= entityLowerCase %>).Error
 
-	return <%= entityLowerCase %>s, err
+	return <%= entityLowerCase %>, err
 }
 
 func (r *Repository<%= entityUpCase %>) Create<%= entityUpCase %>(<%= entityLowerCase %> *entity.Entity<%= entityUpCase %>) error {
