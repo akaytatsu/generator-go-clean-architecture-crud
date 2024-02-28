@@ -14,8 +14,8 @@ func (u *UseCase<%= entityUpCase %>) Get<%= entityUpCase %>ByID(id int) (*entity
 	return u.repo.Get<%= entityUpCase %>ByID(id)
 }
 
-func (u *UseCase<%= entityUpCase %>) GetAll<%= entityUpCase %>s() ([]entity.Entity<%= entityUpCase %>, error) {
-	return u.repo.GetAll<%= entityUpCase %>s()
+func (u *UseCase<%= entityUpCase %>) GetAll<%= entityUpCase %>() ([]entity.Entity<%= entityUpCase %>, error) {
+	return u.repo.GetAll<%= entityUpCase %>()
 }
 
 func (u *UseCase<%= entityUpCase %>) Create<%= entityUpCase %>(<%= entityLowerCase %> *entity.Entity<%= entityUpCase %>) error {
