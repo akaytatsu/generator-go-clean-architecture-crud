@@ -2,30 +2,30 @@ package usecase_<%= entityLowerCase %>
 
 import "app/entity"
 
-type UseCase<%= entityUpCase %> struct {
+type Usecase<%= entityUpCase %> struct {
 	repo IRepository<%= entityUpCase %>
 }
 
-func NewService(repository IRepository<%= entityUpCase %>) *UseCase<%= entityUpCase %> {
-	return &UseCase<%= entityUpCase %>{repo: repository}
+func NewService(repository IRepository<%= entityUpCase %>) *Usecase<%= entityUpCase %> {
+	return &Usecase<%= entityUpCase %>{repo: repository}
 }
 
-func (u *UseCase<%= entityUpCase %>) Get<%= entityUpCase %>ByID(id int) (*entity.Entity<%= entityUpCase %>, error) {
-	return u.repo.Get<%= entityUpCase %>ByID(id)
+func (u *Usecase<%= entityUpCase %>) Get(year int) (*entity.Entity<%= entityUpCase %>, error) {
+	return u.repo.GetFromYear(year)
 }
 
-func (u *UseCase<%= entityUpCase %>) GetAll<%= entityUpCase %>() ([]entity.Entity<%= entityUpCase %>, error) {
-	return u.repo.GetAll<%= entityUpCase %>()
+func (u *Usecase<%= entityUpCase %>) GetAll(searchParams entity.SearchEntity<%= entityUpCase %>Params) (response []entity.Entity<%= entityUpCase %>, totalRegisters int64, err error) {
+	return u.repo.GetAll(searchParams)
 }
 
-func (u *UseCase<%= entityUpCase %>) Create<%= entityUpCase %>(<%= entityLowerCase %> *entity.Entity<%= entityUpCase %>) error {
-	return u.repo.Create<%= entityUpCase %>(<%= entityLowerCase %>)
+func (u *Usecase<%= entityUpCase %>) Create(<%= entityLowerCase %> *entity.Entity<%= entityUpCase %>) error {
+	return u.repo.Create(<%= entityLowerCase %>)
 }
 
-func (u *UseCase<%= entityUpCase %>) Update<%= entityUpCase %>(<%= entityLowerCase %> *entity.Entity<%= entityUpCase %>) error {
-	return u.repo.Update<%= entityUpCase %>(<%= entityLowerCase %>)
+func (u *Usecase<%= entityUpCase %>) Update(<%= entityLowerCase %> *entity.Entity<%= entityUpCase %>) error {
+	return u.repo.Update(<%= entityLowerCase %>)
 }
 
-func (u *UseCase<%= entityUpCase %>) Delete<%= entityUpCase %>(id int) error {
-	return u.repo.Delete<%= entityUpCase %>(id)
+func (u *Usecase<%= entityUpCase %>) Delete(id int) error {
+	return u.repo.Delete(id)
 }

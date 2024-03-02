@@ -23,16 +23,19 @@ func New<%= entityUpCase %>Handler(usecase usecase_<%= entityLowerCase %>.IUseca
 // @Tags <%= entityUpCase %>
 // @Accept  json
 // @Produce  json
-// @Param id path int true "<%= entityUpCase %> ID"
+// @Param year path int true "Year"
 // @Success 200 {object} entity.Entity<%= entityUpCase %> "success"
-// @Router /api/<%= entityLowerCase %>/{id} [get]
+// @Router /api/<%= entityLowerCase %>/{year} [get]
 func (h *<%= entityUpCase %>Handler) Get<%= entityUpCase %>(c *gin.Context) {
-	id, _ := strconv.Atoi(c.Param("id"))
-
-	<%= entityLowerCase %>, err := h.Usecase<%= entityUpCase %>.Get<%= entityUpCase %>ByID(id)
-
+	year, err := strconv.Atoi(c.Param("year"))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		handleError(c, err)
+		return
+	}
+
+	<%= entityLowerCase %>, err := h.Usecase<%= entityUpCase %>.Get(year)
+
+	if exception := handleError(c, err); exception {
 		return
 	}
 
@@ -47,14 +50,32 @@ func (h *<%= entityUpCase %>Handler) Get<%= entityUpCase %>(c *gin.Context) {
 // @Success 200 {object} []entity.Entity<%= entityUpCase %> "success"
 // @Router /api/<%= entityLowerCase %> [get]
 func (h *<%= entityUpCase %>Handler) GetAll<%= entityUpCase %>(c *gin.Context) {
-	<%= entityLowerCase %>, err := h.Usecase<%= entityUpCase %>.GetAll<%= entityUpCase %>()
+	orderBy, sortOrder := getOrderByParams(c, "updated_at")
+	pagina, tamanhoPagina := getPaginationParams(c)
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	params := entity.SearchEntity<%= entityUpCase %>Params{
+		OrderBy:   orderBy,
+		SortOrder: sortOrder,
+		Page:      pagina,
+		PageSize:  tamanhoPagina,
+		Q:         c.Query("q"),
+		CreatedAt: c.Query("created_at"),
+	}
+
+	<%= entityLowerCase %>, totalRegs, err := h.Usecase<%= entityUpCase %>.GetAll(params)
+
+	if exception := handleError(c, err); exception {
 		return
 	}
 
-	c.JSON(http.StatusOK, <%= entityLowerCase %>)
+	paginationResponse := PaginationResponse{
+		TotalPages:     getTotalPaginas(totalRegs, tamanhoPagina),
+		Page:           pagina,
+		TotalRegisters: int(totalRegs),
+		Registers:      <%= entityLowerCase %>,
+	}
+
+	c.JSON(http.StatusOK, paginationResponse)
 }
 
 // @Summary Create <%= entityUpCase %>
@@ -62,18 +83,20 @@ func (h *<%= entityUpCase %>Handler) GetAll<%= entityUpCase %>(c *gin.Context) {
 // @Tags <%= entityUpCase %>
 // @Accept  json
 // @Produce  json
-// @Security ApiKeyAuth
-// @Param entity.Entity<%= entityUpCase %> body entity.Entity<%= entityUpCase %> true "<%= entityUpCase %>"
-// @Success 200 {object} entity.Entity<%= entityUpCase %> "success"
+// @Param <%= entityLowerCase %> body entity.Entity<%= entityUpCase %> true "<%= entityUpCase %>"
+// @Success 201 {object} entity.Entity<%= entityUpCase %> "success"
 // @Router /api/<%= entityLowerCase %> [post]
 func (h *<%= entityUpCase %>Handler) Create<%= entityUpCase %>(c *gin.Context) {
 	var <%= entityLowerCase %> entity.Entity<%= entityUpCase %>
-	c.BindJSON(&<%= entityLowerCase %>)
 
-	err := h.Usecase<%= entityUpCase %>.Create<%= entityUpCase %>(&<%= entityLowerCase %>)
+	if err := c.ShouldBindJSON(&<%= entityLowerCase %>); err != nil {
+		handleError(c, err)
+		return
+	}
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	err := h.Usecase<%= entityUpCase %>.Create(&<%= entityLowerCase %>)
+
+	if exception := handleError(c, err); exception {
 		return
 	}
 
@@ -85,18 +108,20 @@ func (h *<%= entityUpCase %>Handler) Create<%= entityUpCase %>(c *gin.Context) {
 // @Tags <%= entityUpCase %>
 // @Accept  json
 // @Produce  json
-// @Security ApiKeyAuth
-// @Param entity.Entity<%= entityUpCase %> body entity.Entity<%= entityUpCase %> true "<%= entityUpCase %>"
+// @Param <%= entityLowerCase %> body entity.Entity<%= entityUpCase %> true "<%= entityUpCase %>"
 // @Success 200 {object} entity.Entity<%= entityUpCase %> "success"
 // @Router /api/<%= entityLowerCase %> [put]
 func (h *<%= entityUpCase %>Handler) Update<%= entityUpCase %>(c *gin.Context) {
 	var <%= entityLowerCase %> entity.Entity<%= entityUpCase %>
-	c.BindJSON(&<%= entityLowerCase %>)
 
-	err := h.Usecase<%= entityUpCase %>.Update<%= entityUpCase %>(&<%= entityLowerCase %>)
+	if err := c.ShouldBindJSON(&<%= entityLowerCase %>); err != nil {
+		handleError(c, err)
+		return
+	}
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	err := h.Usecase<%= entityUpCase %>.Update(&<%= entityLowerCase %>)
+
+	if exception := handleError(c, err); exception {
 		return
 	}
 
@@ -112,29 +137,32 @@ func (h *<%= entityUpCase %>Handler) Update<%= entityUpCase %>(c *gin.Context) {
 // @Success 200 {object} entity.Entity<%= entityUpCase %> "success"
 // @Router /api/<%= entityLowerCase %>/{id} [delete]
 func (h *<%= entityUpCase %>Handler) Delete<%= entityUpCase %>(c *gin.Context) {
-	id, _ := strconv.Atoi(c.Param("id"))
-
-	err := h.Usecase<%= entityUpCase %>.Delete<%= entityUpCase %>(id)
-
+	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		handleError(c, err)
+		return
+	}
+
+	err = h.Usecase<%= entityUpCase %>.Delete(id)
+
+	if exception := handleError(c, err); exception {
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "<%= entityUpCase %> deleted successfully"})
 }
 
-func Mount<%= entityUpCase %>Handler(gin *gin.Engine, conn *gorm.DB, usecase usecase_<%= entityLowerCase %>.IUsecase<%= entityUpCase %>) {
+func Mount<%= entityUpCase %>Routes(gin *gin.Engine, conn *gorm.DB, usecase usecase_<%= entityLowerCase %>.IUsecase<%= entityUpCase %>) {
 	handler := New<%= entityUpCase %>Handler(usecase)
 
 	group := gin.Group("/api/<%= entityLowerCase %>")
 
-	group.GET("/:id", handler.Get<%= entityUpCase %>)
+	group.GET("/:year", handler.Get<%= entityUpCase %>)
 	group.GET("/", handler.GetAll<%= entityUpCase %>)
 
 	SetAdminMiddleware(conn, group)
 
 	group.POST("/", handler.Create<%= entityUpCase %>)
-	group.PUT("/", handler.Update<%= entityUpCase %>)
+	group.PUT("/:id", handler.Update<%= entityUpCase %>)
 	group.DELETE("/:id", handler.Delete<%= entityUpCase %>)
 }
