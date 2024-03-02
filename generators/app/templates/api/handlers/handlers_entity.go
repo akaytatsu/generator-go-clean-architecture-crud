@@ -23,17 +23,17 @@ func New<%= entityUpCase %>Handler(usecase usecase_<%= entityLowerCase %>.IUseca
 // @Tags <%= entityUpCase %>
 // @Accept  json
 // @Produce  json
-// @Param year path int true "Year"
+// @Param id path int true "ID"
 // @Success 200 {object} entity.Entity<%= entityUpCase %> "success"
-// @Router /api/<%= entityLowerCase %>/{year} [get]
+// @Router /api/<%= entityLowerCase %>/{id} [get]
 func (h *<%= entityUpCase %>Handler) Get<%= entityUpCase %>(c *gin.Context) {
-	year, err := strconv.Atoi(c.Param("year"))
+	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		handleError(c, err)
 		return
 	}
 
-	<%= entityLowerCase %>, err := h.Usecase<%= entityUpCase %>.Get(year)
+	<%= entityLowerCase %>, err := h.Usecase<%= entityUpCase %>.Get(id)
 
 	if exception := handleError(c, err); exception {
 		return
@@ -157,7 +157,7 @@ func Mount<%= entityUpCase %>Routes(gin *gin.Engine, conn *gorm.DB, usecase usec
 
 	group := gin.Group("/api/<%= entityLowerCase %>")
 
-	group.GET("/:year", handler.Get<%= entityUpCase %>)
+	group.GET("/:id", handler.Get<%= entityUpCase %>)
 	group.GET("/", handler.GetAll<%= entityUpCase %>)
 
 	SetAdminMiddleware(conn, group)

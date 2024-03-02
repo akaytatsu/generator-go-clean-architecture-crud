@@ -10,8 +10,8 @@ func NewService(repository IRepository<%= entityUpCase %>) *Usecase<%= entityUpC
 	return &Usecase<%= entityUpCase %>{repo: repository}
 }
 
-func (u *Usecase<%= entityUpCase %>) Get(year int) (*entity.Entity<%= entityUpCase %>, error) {
-	return u.repo.GetFromYear(year)
+func (u *Usecase<%= entityUpCase %>) Get(id int) (*entity.Entity<%= entityUpCase %>, error) {
+	return u.repo.GetFromID(id)
 }
 
 func (u *Usecase<%= entityUpCase %>) GetAll(searchParams entity.SearchEntity<%= entityUpCase %>Params) (response []entity.Entity<%= entityUpCase %>, totalRegisters int64, err error) {

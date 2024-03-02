@@ -17,8 +17,8 @@ func New<%= entityUpCase %>Postgres(DB *gorm.DB) *Repository<%= entityUpCase %> 
 	return &Repository<%= entityUpCase %>{DB: DB}
 }
 
-func (r *Repository<%= entityUpCase %>) GetFromYear(year int) (<%= entityLowerCase %> *entity.Entity<%= entityUpCase %>, err error) {
-	r.DB.First(&<%= entityLowerCase %>, year)
+func (r *Repository<%= entityUpCase %>) GetFromID(id int) (<%= entityLowerCase %> *entity.Entity<%= entityUpCase %>, err error) {
+	r.DB.First(&<%= entityLowerCase %>, id)
 
 	return
 }
@@ -72,7 +72,7 @@ func (r *Repository<%= entityUpCase %>) Create(<%= entityLowerCase %> *entity.En
 }
 
 func (r *Repository<%= entityUpCase %>) Update(<%= entityLowerCase %> *entity.Entity<%= entityUpCase %>) (err error) {
-	_, err = r.GetFromYear(int(<%= entityLowerCase %>.Year))
+	_, err = r.GetFromID(int(<%= entityLowerCase %>.ID))
 
 	if err != nil {
 		return
