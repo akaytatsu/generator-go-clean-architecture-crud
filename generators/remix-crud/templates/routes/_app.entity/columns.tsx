@@ -1,4 +1,9 @@
-import { Button, DataTableHeader, Icons, type RT } from "vertc-design-system";
+import {
+  Button,
+  DataTableHeader,
+  Icons,
+  type RT,
+} from "@vert-capital/design-system-ui";
 import { dateDisplay } from "~/common/format";
 import { UserModel } from "~/models/user.model";
 
@@ -17,6 +22,20 @@ export function getColumns({ handleEdit }: Props): RT.ColumnDef<UserModel>[] {
         return (
           <div title={id.toString()} className="w-[200px] truncate">
             {id}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "name",
+      header: ({ column }) => (
+        <DataTableHeader title="Name" column={column} isSort />
+      ),
+      cell: ({ row }) => {
+        const name: string = row.getValue("name");
+        return (
+          <div className="w-[130px] truncate" title={name}>
+            {name}
           </div>
         );
       },

@@ -5,7 +5,7 @@ import {
   CardHeader,
   DataTable,
   Icons,
-} from "vertc-design-system";
+} from "@vert-capital/design-system-ui";
 
 import {
   ActionFunctionArgs,

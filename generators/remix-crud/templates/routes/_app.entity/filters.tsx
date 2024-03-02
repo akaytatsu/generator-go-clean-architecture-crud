@@ -21,7 +21,7 @@ import {
   SheetTitle,
   SheetTrigger,
   dateDisplay,
-} from "vertc-design-system";
+} from "@vert-capital/design-system-ui";
 import { toCamelCase } from "~/common/formatString";
 import { <%= entityUpCase %>FilterModel } from "~/models/<%= entityLowerCase %>.model";
 

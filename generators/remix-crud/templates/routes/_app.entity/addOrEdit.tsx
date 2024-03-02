@@ -19,7 +19,7 @@ import {
   SheetHeader,
   SheetTitle,
   useToast,
-} from "vertc-design-system";
+} from "@vert-capital/design-system-ui";
 import { z } from "zod";
 import { handleError } from "~/common/handle-error";
 import { <%= entityUpCase %>Model } from "~/models/<%= entityLowerCase %>.model";

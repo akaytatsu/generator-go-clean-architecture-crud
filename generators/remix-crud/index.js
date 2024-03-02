@@ -47,6 +47,11 @@ export default class extends Generator {
         );
 
         this.fs.copyTpl(
+            this.templatePath('routes/_app.entity/filters.tsx'),
+            this.destinationPath(basePath + 'routes/_app.' + entityLowerCase + '/filters.tsx'), params
+        );
+
+        this.fs.copyTpl(
             this.templatePath('services/entity.service.ts'),
             this.destinationPath(basePath + 'services/' + entityLowerCase + '.service.ts'), params
         );
