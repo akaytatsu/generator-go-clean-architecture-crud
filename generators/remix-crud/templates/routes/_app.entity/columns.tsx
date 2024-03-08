@@ -5,12 +5,12 @@ import {
   type RT,
 } from "@vert-capital/design-system-ui";
 import { dateDisplay } from "~/common/format";
-import { UserModel } from "~/models/user.model";
+import { <%= entityUpCase %>Model } from "~/models/<%= entityLowerCase %>.model";
 
 type Props = {
-  handleEdit: (data: UserModel) => void;
+  handleEdit: (data: <%= entityUpCase %>Model) => void;
 };
-export function getColumns({ handleEdit }: Props): RT.ColumnDef<UserModel>[] {
+export function getColumns({ handleEdit }: Props): RT.ColumnDef<<%= entityUpCase %>Model>[] {
   return [
     {
       accessorKey: "id",
@@ -20,7 +20,7 @@ export function getColumns({ handleEdit }: Props): RT.ColumnDef<UserModel>[] {
       cell: ({ row }) => {
         const id: number = row.getValue("id");
         return (
-          <div title={id.toString()} className="w-[200px] truncate">
+          <div title={id.toString()} className="w-[50px] truncate">
             {id}
           </div>
         );
@@ -48,7 +48,7 @@ export function getColumns({ handleEdit }: Props): RT.ColumnDef<UserModel>[] {
       cell: ({ row }) => {
         const active: string = row.getValue("active") ? "Sim" : "Não";
         return (
-          <div className="w-[130px] truncate" title={active}>
+          <div className="w-[70px] truncate" title={active}>
             {active}
           </div>
         );
@@ -106,5 +106,5 @@ export function getColumns({ handleEdit }: Props): RT.ColumnDef<UserModel>[] {
         );
       },
     },
-  ] as RT.ColumnDef<UserModel>[];
+  ] as RT.ColumnDef<<%= entityUpCase %>Model>[];
 }

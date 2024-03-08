@@ -37,10 +37,12 @@ export class <%= entityUpCase %>Service {
   async createOrEdit({ body }: { body: any }, request: Request): Promise<void> {
     const payload = new <%= entityUpCase %>Model(body);
 
+    const jsonData = payload.toJson();
+
     if (payload.id && payload.id > 0) {
-      await api.put(`<%= entityLowerCase %>/${payload.id}`, {body: payload.toJson(), request});
+      await api.put(`<%= entityLowerCase %>/${jsonData.id}`, {body: jsonData, request});
     } else {
-      await api.post('<%= entityLowerCase %>', {body: payload.toJson(), request});
+      await api.post('<%= entityLowerCase %>', {body: jsonData, request});
     }
   }
 
