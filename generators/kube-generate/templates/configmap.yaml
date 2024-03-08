@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: <%= namespace %>-config
+  namespace: <%= namespace %>
+data:
+  POSTGRES_DB: ""
+  POSTGRES_USER: ""
+  POSTGRES_PASSWORD: ""
+  POSTGRES_HOST: ""
+  POSTGRES_PORT: "5432"
+  KAFKA_BOOTSTRAP_SERVER: ""
+  KAFKA_CLIENT_ID: ""
+  KAFKA_GROUP_ID: ""
+  CAS_SERVER_URL: ""
+  FRONTEND_AUTH_REDIRECT: ""

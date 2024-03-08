@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: <%= namespace %>-front-config
+  namespace: <%= namespace %>
+data:
+  PORT: "3000"
+  SESSION_SECRET: ""
+  BASE_URL_API: ""
+  LOGIN_URL: ""

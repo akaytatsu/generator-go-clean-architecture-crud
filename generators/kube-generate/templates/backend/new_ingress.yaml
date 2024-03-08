@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+  name: <%= namespace %>-back-ingress
+  namespace: <%= namespace %>
+spec:
+  rules:
+    - host: api.domain.vert-capital.app
+      http:
+        paths:
+          - backend:
+              service:
+                name: <%= namespace %>-back
+                port:
+                  number: 80
+            pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - api.domain.vert-capital.app
+      secretName: <%= namespace %>-back-tls

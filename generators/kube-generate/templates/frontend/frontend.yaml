@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <%= namespace %>-front
+  namespace: <%= namespace %>
+  labels:
+    app: <%= namespace %>-front
+spec:
+  revisionHistoryLimit: 0
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+  replicas: 1
+  selector:
+    matchLabels:
+      app: <%= namespace %>-front
+  template:
+    metadata:
+      labels:
+        app: <%= namespace %>-front
+    spec:
+      containers:
+        - name: <%= namespace %>-front
+          image: 197272534240.dkr.ecr.us-east-1.amazonaws.com/IMAGENAME:latest
+          imagePullPolicy: Always
+          readinessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 80m
+              memory: 150Mi
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: <%= namespace %>-front-config
+          volumeMounts:
+            - name: config
+              mountPath: /etc/localtime
+      volumes:
+        - name: config
+          hostPath:
+            path: /usr/share/zoneinfo/America/Sao_Paulo

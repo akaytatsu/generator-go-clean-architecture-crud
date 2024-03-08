@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <%= namespace %>-back
+  namespace: <%= namespace %>
+  labels:
+    app: <%= namespace %>-back
+spec:
+  revisionHistoryLimit: 0
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+  replicas: 1
+  selector:
+    matchLabels:
+      app: <%= namespace %>-back
+  template:
+    metadata:
+      labels:
+        app: <%= namespace %>-back
+    spec:
+      containers:
+        - name: <%= namespace %>-back
+          image: 197272534240.dkr.ecr.us-east-1.amazonaws.com/IMAGENAME:latest
+          imagePullPolicy: Always
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            limits:
+              cpu: 700m
+              memory: 800Mi
+            requests:
+              cpu: 80m
+              memory: 150Mi
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: <%= namespace %>-config
+          volumeMounts:
+            - name: config
+              mountPath: /etc/localtime
+      volumes:
+        - name: config
+          hostPath:
+            path: /usr/share/zoneinfo/America/Sao_Paulo
