@@ -18,7 +18,7 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-  useToast,
+  sonner,
 } from "@vert-capital/design-system-ui";
 import { z } from "zod";
 import { handleError } from "~/common/handle-error";
@@ -35,7 +35,6 @@ export function AddOrEdit({ data, close }: Props) {
   const isEdit = data?.id ? true : false;
   const fetcher = useFetcher<typeof action>();
   const { revalidate } = useRevalidator();
-  const { toast } = useToast();
 
   const form = useForm<<%= entityUpCase %>Model>({
     resolver: zodResolver(<%= entityUpCase %>Model.schema),
@@ -55,15 +54,14 @@ export function AddOrEdit({ data, close }: Props) {
     if (fetcher.data?.success) {
       revalidate();
       close();
-      toast({
-        title: "Permissões salvas com sucesso",
-        _type: "success",
+      sonner.toast.success("Tudo certo!", {
+        description: "Registro criado com sucesso",
+        closeButton: true,
       });
     } else if (fetcher.data?.error) {
-      toast({
-        title: "Erro ao salvar",
+      sonner.toast.error("Ops.. Deu erro!", {
         description: handleError(fetcher.data?.error).message,
-        _type: "error",
+        closeButton: true,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
