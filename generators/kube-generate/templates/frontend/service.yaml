@@ -2,11 +2,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: vert-fileexplorer-prd-front
-  namespace: vert-fileexplorer-prd
+  name: <%= namespace %>-front
+  namespace: <%= namespace %>
 spec:
   ports:
     - port: 80
       targetPort: 3000
   selector:
-    app: vert-fileexplorer-prd-front
+    app: <%= namespace %>-front
