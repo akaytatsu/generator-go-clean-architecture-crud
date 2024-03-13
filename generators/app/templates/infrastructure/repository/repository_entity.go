@@ -83,7 +83,7 @@ func (r *Repository<%= entityUpCase %>) Update(<%= entityLowerCase %> *entity.En
 	_, err = r.GetFromID(int(<%= entityLowerCase %>.ID))
 
 	if err != nil {
-		 err
+		return err
 	}
 
 	err = r.DB.Save(&<%= entityLowerCase %>).Error
