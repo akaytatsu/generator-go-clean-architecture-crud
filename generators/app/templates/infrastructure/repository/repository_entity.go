@@ -76,23 +76,23 @@ func (r *Repository<%= entityUpCase %>) GetAll(searchParams entity.SearchEntity<
 func (r *Repository<%= entityUpCase %>) Create(<%= entityLowerCase %> *entity.Entity<%= entityUpCase %>) (err error) {
 	err = r.DB.Create(&<%= entityLowerCase %>).Error
 
-	return
+	return err
 }
 
 func (r *Repository<%= entityUpCase %>) Update(<%= entityLowerCase %> *entity.Entity<%= entityUpCase %>) (err error) {
 	_, err = r.GetFromID(int(<%= entityLowerCase %>.ID))
 
 	if err != nil {
-		return
+		 err
 	}
 
 	err = r.DB.Save(&<%= entityLowerCase %>).Error
 
-	return
+	return err
 }
 
 func (r *Repository<%= entityUpCase %>) Delete(id int) (err error) {
 	err = r.DB.Delete(&entity.Entity<%= entityUpCase %>{}, id).Error
 
-	return
+	return err
 }
